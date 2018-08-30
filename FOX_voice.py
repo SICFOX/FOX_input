@@ -41,6 +41,9 @@ def detected_callback():
     pygame.mixer.init()
 
     state = 1
+    osc_msg = make_osc(state)
+    client.send(osc_msg)
+
     pygame.mixer.music.load(filename1)
     mp3_length = mp3(filename1).info.length
     pygame.mixer.music.play(1)
@@ -48,6 +51,9 @@ def detected_callback():
     pygame.mixer.music.stop()
 
     state = 2
+    osc_msg = make_osc(state)
+    client.send(osc_msg)
+
     pygame.mixer.music.load(filename2)
     mp3_length = mp3(filename2).info.length
     pygame.mixer.music.play(1)
@@ -55,6 +61,9 @@ def detected_callback():
     pygame.mixer.music.stop()
 
     state = 3
+    osc_msg = make_osc(state)
+    client.send(osc_msg)
+
     pygame.mixer.music.load(filename3)
     mp3_length = mp3(filename3).info.length
     pygame.mixer.music.play(1)
@@ -62,15 +71,18 @@ def detected_callback():
     pygame.mixer.music.stop()
 
     state = 4
+    osc_msg = make_osc(state)
+    client.send(osc_msg)
+
     pygame.mixer.music.load(filename4)
     mp3_length = mp3(filename4).info.length
     pygame.mixer.music.play(1)
     sleep(mp3_length + 0.25)
     pygame.mixer.music.stop()
 
-    osc_msg = make_osc(state)
-    client.send(osc_msg)
-
 state = 0
+osc_msg = make_osc(state)
+client.send(osc_msg)
+
 detector = snowboydecoder.HotwordDetector(HOTWORD_FILE, sensitivity=0.5)
 detector.start(detected_callback=detected_callback)
