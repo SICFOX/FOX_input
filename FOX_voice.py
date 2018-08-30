@@ -20,10 +20,12 @@ client = udp_client.UDPClient(args.ip, args.port)
 
 #read .pmdl File
 dir = os.path.dirname(os.path.abspath(__file__))
+
 #You say "Hey, FOX".
 HOTWORD_FILE = dir + "/voice/FOX.pmdl"
 
-filename1 = '/voice/intro.mp3' #再生したいmp3ファイル
+#再生したいmp3ファイル
+filename1 = '/voice/intro.mp3' 
 filename2 = '/voice/face_expression.mp3'
 filename3 = '/voice/hand_sign.mp3'
 filename4 = '/voice/wait.mp3'
