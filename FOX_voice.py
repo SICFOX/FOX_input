@@ -24,9 +24,9 @@ dir = os.path.dirname(os.path.abspath(__file__))
 HOTWORD_FILE = dir + "/voice/FOX.pmdl"
 
 filename1 = '/voice/intro.mp3' #再生したいmp3ファイル
-filename2 = '/voice/face_expression.mp3' #再生したいmp3ファイル
-filename3 = '/voice/hand_sign.mp3' #再生したいmp3ファイル
-filename4 = '/voice/wait.mp3' #再生したいmp3ファイル
+filename2 = '/voice/face_expression.mp3'
+filename3 = '/voice/hand_sign.mp3'
+filename4 = '/voice/wait.mp3'
 
 #OSCでstateを送信する。
 def make_osc(state):

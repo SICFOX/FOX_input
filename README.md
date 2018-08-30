@@ -2,12 +2,10 @@
 
 ## FOX_onlyCamera
 これは、Kinectのカメラ入力でスケルトン化していないWebカメラの入力がそのまま出るものである。
-<br>
 FOXで人の顔を撮影するときに使う。
 
 ## FOX_onlySkeleton
 これは、Kinectのカメラ入力からスケルトン化させるものである。
-<br>
 FOXで両腕の幅を測定するときに使う。
 
 ## FOX_test
