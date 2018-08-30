@@ -3,20 +3,15 @@ from snowboy import snowboydecoder
 import os.path
 import sys
 import argparse
-from python_osc.pythonosc import osc_message_builder
-from python_osc.pythonosc import udp_client
+from osc4py3.as_eventloop import *
+from osc4py3 import oscbuildparse
 from mutagen.mp3 import MP3 as mp3
 import pygame
 import requests
 from time import sleep
 
-#OSC setup
-port_num = 12345
-parser = argparse.ArgumentParser()
-parser.add_argument("--ip", default="127.0.0.1", help="The ip of th OSC Server")
-parser.add_argument("--port", type=int, default=port_num, help="The port the OSC server is listening on")
-args = parser.parse_args()
-client = udp_client.UDPClient(args.ip, args.port)
+osc_startup()
+osc_udp_client("127.0.0.1", 12345, "input_state")
 
 #read .pmdl File
 dir = os.path.dirname(os.path.abspath(__file__))
@@ -25,7 +20,7 @@ dir = os.path.dirname(os.path.abspath(__file__))
 HOTWORD_FILE = dir + "/voice/FOX.pmdl"
 
 #再生したいmp3ファイル
-filename1 = '/voice/intro.mp3' 
+filename1 = '/voice/intro.mp3'
 filename2 = '/voice/face_expression.mp3'
 filename3 = '/voice/hand_sign.mp3'
 filename4 = '/voice/wait.mp3'
@@ -43,8 +38,9 @@ def detected_callback():
     pygame.mixer.init()
 
     state = 1
-    osc_msg = make_osc(state)
-    client.send(osc_msg)
+    msg = oscbuildparse.OSCMessage("/event_state", None, [state])
+    osc_send(msg, "input_state")
+    osc_process()
 
     pygame.mixer.music.load(filename1)
     mp3_length = mp3(filename1).info.length
@@ -53,8 +49,9 @@ def detected_callback():
     pygame.mixer.music.stop()
 
     state = 2
-    osc_msg = make_osc(state)
-    client.send(osc_msg)
+    msg = oscbuildparse.OSCMessage("/event_state", None, [state])
+    osc_send(msg, "input_state")
+    osc_process()
 
     pygame.mixer.music.load(filename2)
     mp3_length = mp3(filename2).info.length
@@ -63,8 +60,9 @@ def detected_callback():
     pygame.mixer.music.stop()
 
     state = 3
-    osc_msg = make_osc(state)
-    client.send(osc_msg)
+    msg = oscbuildparse.OSCMessage("/event_state", None, [state])
+    osc_send(msg, "input_state")
+    osc_process()
 
     pygame.mixer.music.load(filename3)
     mp3_length = mp3(filename3).info.length
@@ -73,8 +71,9 @@ def detected_callback():
     pygame.mixer.music.stop()
 
     state = 4
-    osc_msg = make_osc(state)
-    client.send(osc_msg)
+    msg = oscbuildparse.OSCMessage("/event_state", None, [state])
+    osc_send(msg, "input_state")
+    osc_process()
 
     pygame.mixer.music.load(filename4)
     mp3_length = mp3(filename4).info.length
@@ -83,8 +82,9 @@ def detected_callback():
     pygame.mixer.music.stop()
 
 state = 0
-osc_msg = make_osc(state)
-client.send(osc_msg)
+msg = oscbuildparse.OSCMessage("/event_state", None, [state])
+osc_send(msg, "input_state")
+osc_process()
 
 detector = snowboydecoder.HotwordDetector(HOTWORD_FILE, sensitivity=0.5)
 detector.start(detected_callback=detected_callback)
