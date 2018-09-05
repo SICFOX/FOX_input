@@ -1,5 +1,5 @@
 import re
-from snowboy import snowboydecoder
+import snowboy.snowboydecoder
 import os.path
 import sys
 import argparse
@@ -17,13 +17,13 @@ osc_udp_client("127.0.0.1", 12345, "input_state")
 dir = os.path.dirname(os.path.abspath(__file__))
 
 #You say "Hey, FOX".
-HOTWORD_FILE = dir + "/voice/FOX.pmdl"
+HOTWORD_FILE = dir + "voice/FOX.pmdl"
 
 #再生したいmp3ファイル
-filename1 = '/voice/intro.mp3'
-filename2 = '/voice/face_expression.mp3'
-filename3 = '/voice/hand_sign.mp3'
-filename4 = '/voice/wait.mp3'
+filename1 = 'voice/intro.mp3'
+filename2 = 'voice/face_expression.mp3'
+filename3 = 'voice/hand_sign.mp3'
+filename4 = 'voice/wait.mp3'
 
 #OSCでstateを送信する。
 def make_osc(state):
