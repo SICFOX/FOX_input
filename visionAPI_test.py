@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 #python label_detection.py (APIキー) (画像ファイルのパス)
 #api_key AIzaSyCYzlittDbDrELqOMGn77-LYLiuplMnvgA
 
@@ -10,7 +13,7 @@ ENDPOINT_URL = 'https://vision.googleapis.com/v1/images:annotate'
 
 if __name__ == '__main__':
     image_filenames = argv[1:]
-    
+
     img_requests = []
     for imgname in image_filenames:
         with open(imgname, 'rb') as f:
