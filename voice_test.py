@@ -1,3 +1,6 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import re
 import os.path
 import sys
@@ -32,7 +35,7 @@ def make_osc(state):
     msg = osc_message_builder.OscMessageBuilder(address= "/event_state")
     msg.add_arg(state)
     msg = msg.build()
-    
+
     return msg
 
 #callback function
