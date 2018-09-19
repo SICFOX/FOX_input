@@ -37,8 +37,7 @@ cloud visionAPIを叩き、４つの感情を返ってくるものをテスト�
 ## cvapi.py
 cloud visionAPIをうまく叩けているか確認するものである。
 <br>
-`$ python visionAPI_test.py api_key img1.jpg`
+`$ python cvapi.py api_key img1.jpg`
 <br>
 のように記述する必要がある。エラーを吐く場合、エラーに記述されているIPアドレスをコピーし、プロジェクトに設定する必要がある。
-
-
+versionはPython

@@ -16,7 +16,6 @@ String time = "10";
 int t;
 int interval = 10;
 
-
 SimpleOpenNI  context;
 
 void setup()

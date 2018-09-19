@@ -27,8 +27,7 @@ void setup()
   size(640,480);
   
   context = new SimpleOpenNI(this);
-  if(context.isInit() == false)
-  {
+  if(context.isInit() == false){
      println("Can't init SimpleOpenNI, maybe the camera is not connected!"); 
      exit();
      return;  
@@ -152,4 +151,3 @@ void keyPressed()
     break;
   }
 }  
-
