@@ -16,7 +16,7 @@ ENDPOINT_URL = 'https://vision.googleapis.com/v1/images:annotate'
 #ser = serial.Serial('/dev/cu.wchusbserial1420', 9600)
 
 if __name__ == '__main__':
-    image_filenames = argv[1:]
+    image_filenames = ['img/img1.jpg']
 
     img_requests = []
     for imgname in image_filenames:
@@ -53,16 +53,23 @@ if __name__ == '__main__':
         d = response.json()['responses'][0]['faceAnnotations'][0]['surpriseLikelihood']
 
         emotion = {1:a, 2:b, 3:c, 0:d}
+        print(emotion)
 
-        for key, value in emotion.items():
-            if value == 'VERY_LIKELY':
-                #ser.write(key)
-                print(key)
-
-        if a == 'VERY_UNLIKELY' or b == 'VERY_UNLIKELY' or c == 'VERY_UNLIKELY' or d == 'VERY_UNLIKELY':
-            #ser.write(key)
-            print(0)
-
-
-
-
+#Comparison of emotions
+        out = [key for key, value in emotion.items() if value == 'VERY_LIKELY']
+        if not out:
+            out2 = [key for key, value in emotion.items() if value == 'LIKELY']
+            if not out2:
+                out3 = [key for key, value in emotion.items() if value == 'POSSIBLE']
+                if not out3:
+                    #ser.write(0)
+                    print(0)
+                else:
+                    #ser.write(out3[0])
+                    print(out3[0])
+            else:
+                #ser.write(out2[0])
+                print(out2[0])
+        else:
+            #ser.write(out[0])
+            print(out[0])
