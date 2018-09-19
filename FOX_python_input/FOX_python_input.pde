@@ -1,55 +1,45 @@
-import oscP5.*;
-import netP5.*;
+import processing.net.*;
 
-OscP5 oscP5;
-OscP5 oscP5Send;
-NetAddress myRemoteLocation;
-
-int receivePort = 12345;
-int sendPort = 56789;
-String sendIP = "127.0.0.1";
-
+int port = 10001; // 適当なポート番号を設定
 int state = 0;
+
+Server server;
 
 void setup() {
   size(400, 400);
-  oscP5 = new OscP5(this, receivePort);
-  oscP5Send = new OscP5(this, sendPort);
-  myRemoteLocation = new NetAddress(sendIP, sendPort);
+  server = new Server(this, port);
+  println("server address: " + server.ip()); // IPアドレスを出力
 }
 
 void draw() {
-  OscMessage msg = new OscMessage("/state_receive");
-  switch(state) {
-  case 0:
-    background(0);
-    msg.add(1);
-    oscP5Send.send(msg, myRemoteLocation);
-    break;
-  case 1:
-    background(255);
-    msg.add(2);
-    oscP5Send.send(msg, myRemoteLocation);
-    break;
-  case 2:
-    background(255, 0, 0);
-    msg.add(3);
-    oscP5Send.send(msg, myRemoteLocation);
-    break;
-  case 3:
-    background(0, 255, 0);
-    msg.add(4);
-    oscP5Send.send(msg, myRemoteLocation);
-    break;
-  case 4:
-    background(0, 0, 255);
-    break;
-  }
-}
+  Client client = server.available();
 
-void oscEvent(OscMessage theOscMessage) {
-  if (theOscMessage.checkAddrPattern("/event_state") == true) {
-    state = theOscMessage.get(0).intValue();
-    print(state);
+  if (client !=null) {
+    String whatClientSaid = client.readString();
+    if (whatClientSaid != null) {
+      //println(whatClientSaid); // Pythonからのメッセージを出力
+      switch (int(whatClientSaid)){
+        case 0:
+          background(0);
+          break;
+        case 1:
+          background(255);
+          server.write("[01]Processingから送っているよ！");
+          break;
+        case 2:
+          background(255, 0, 0);
+          server.write("[02]Processingから送っているよ！");
+          break;
+        case 3:
+          background(0, 255, 0);
+          server.write("[03]Processingから送っているよ！");
+          break;
+        case 4:
+          background(0, 0, 255);
+          server.write("[04]Processingから送っているよ！");
+          server.write("Processingから送っているよ！4");
+          break;
+      }
+    }
   }
 }
