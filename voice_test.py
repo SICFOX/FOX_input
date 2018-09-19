@@ -9,9 +9,6 @@ import pygame
 import requests
 from time import sleep
 
-osc_startup()
-osc_udp_client("127.0.0.1", 12345, "input_state")
-
 #read .pmdl File
 dir = os.path.dirname(os.path.abspath(__file__))
 
@@ -24,24 +21,32 @@ filename2 = 'voice/face_expression.mp3'
 filename3 = 'voice/hand_sign.mp3'
 filename4 = 'voice/wait.mp3'
 
-#OSCでstateを送信する。
+#OSC state send
 def make_osc(state):
     msg = osc_message_builder.OscMessageBuilder(address= "/event_state")
     msg.add_arg(state)
     msg = msg.build()
-
+    
     return msg
 
-state = 0
-msg = oscbuildparse.OSCMessage("/event_state", None, [state])
-osc_send(msg, "input_state")
-osc_process()
+#callback function
+def handlerfunction(msg_receive):
+    osc_receive = msg_receive
+
+osc_startup()
+osc_udp_server("127.0.0.1", 12345, "state_receive")
+osc_udp_client("127.0.0.1", 12345, "input_state")
+
+#osc receive
+osc_receive = 0
+finished = False
+
+#mixer setting
 pygame.mixer.init()
 
-state = 1
-msg = oscbuildparse.OSCMessage("/event_state", None, [state])
-osc_send(msg, "input_state")
-osc_process()
+#1
+osc_method("/state_receive", handlerfunction)
+state = osc_receive
 
 pygame.mixer.music.load(filename1)
 mp3_length = mp3(filename1).info.length
@@ -49,10 +54,12 @@ pygame.mixer.music.play(1)
 sleep(mp3_length + 0.25)
 pygame.mixer.music.stop()
 
-state = 2
 msg = oscbuildparse.OSCMessage("/event_state", None, [state])
 osc_send(msg, "input_state")
-osc_process()
+
+#2
+osc_method("/state_receive", handlerfunction)
+state = osc_receive
 
 pygame.mixer.music.load(filename2)
 mp3_length = mp3(filename2).info.length
@@ -60,10 +67,12 @@ pygame.mixer.music.play(1)
 sleep(mp3_length + 0.25)
 pygame.mixer.music.stop()
 
-state = 3
 msg = oscbuildparse.OSCMessage("/event_state", None, [state])
 osc_send(msg, "input_state")
-osc_process()
+
+#3
+osc_method("/state_receive", handlerfunction)
+state = osc_receive
 
 pygame.mixer.music.load(filename3)
 mp3_length = mp3(filename3).info.length
@@ -71,13 +80,24 @@ pygame.mixer.music.play(1)
 sleep(mp3_length + 0.25)
 pygame.mixer.music.stop()
 
-state = 4
 msg = oscbuildparse.OSCMessage("/event_state", None, [state])
 osc_send(msg, "input_state")
-osc_process()
+
+
+#4
+osc_method("/state_receive", handlerfunction)
+state = osc_receive
 
 pygame.mixer.music.load(filename4)
 mp3_length = mp3(filename4).info.length
 pygame.mixer.music.play(1)
 sleep(mp3_length + 0.25)
 pygame.mixer.music.stop()
+
+msg = oscbuildparse.OSCMessage("/event_state", None, [state])
+osc_send(msg, "input_state")
+
+while not finished:
+    osc_process()
+
+osc_terminate()
